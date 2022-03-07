@@ -32,7 +32,7 @@ void	ft_putstr_fd(char *s, int fd)
 	}
 }
 
-int	is_color(char *str)
+static int	is_color(char *str)
 {
 	if (*str++ != '0' || *str++ != 'x' || ft_strlen(str) > 6)
 		return (0);
@@ -44,7 +44,7 @@ int	is_color(char *str)
 	}
 	return (1);
 }
-int	my_atoi(char *str)
+int	my_atoi(char *str, t_point *point)
 {
 	unsigned long long	n;
 	int					symbole;
@@ -62,8 +62,12 @@ int	my_atoi(char *str)
 		n = n * 10 + *str - 48;
 		str++;
 	}
-	if (*str || (n >= 2147483648 && symbole == 1)
-		|| (n > 2147483648 && symbole == -1))
+	if (!*str)
+		point->color = NULL;
+	else if (*str == ',' && is_color(++str))
+		point->color = str;
+	else if (*str /*|| (n >= 2147483648 && symbole == 1)
+		|| (n > 2147483648 && symbole == -1)*/)
 		error_case();
 	return (symbole * n);
 }

@@ -1,80 +1,57 @@
 #include "fdf.h"
 
-t_point	**list_to_array(t_line *line, int *size)
+void	draw_map(t_point **map, t_window *win)
 {
-	int		i;
-	int		j;
-	char	**p;
-	t_point	**map;
+	int			i;
+	int			j;
+	t_segment	*seg;
 
-	map = (t_point **) malloc(sizeof(t_point *) * (size[1] + 1));
-	(!map) && error_case();
-	i = 0;
-	while (line)
+	i = -1;
+	seg = malloc(sizeof(t_segment));
+	!(seg) && error_case();
+	while (map[++i])
 	{
-		map[i] = (t_point *) malloc(sizeof(t_point) * (size[0] + 1));
-		p = line->points;
-		j = 0;
-		while (p[j])
+		j = -1;
+		while ((++j + 1) < win->map_size[1])
 		{
-			(&map[i][j]) -> x = j;
-			(&map[i][j]) -> y = i;
-			(&map[i][j]) -> z = my_atoi(p[j]);
-			j++;
+			seg->color = (&map[i][j])->color;
+			seg->xi = (&map[i][j])->x;
+			seg->yi = (&map[i][j])->y;
+			seg->xf = (&map[i][j + 1])->x;
+			seg->yf = (&map[i][j + 1])->y;
+			draw(seg, win);
+			if (map[i + 1])
+			{
+				seg->xf = (&map[i + 1][j])->x;
+				seg->yf = (&map[i + 1][j])->y;
+				draw(seg, win);
+			}
 		}
-		line = line->next;
-		i++;
+		if (map[i + 1])
+		{
+			seg->xi = (&map[i][j])->x;			
+			seg->xf = (&map[i][j])->x;
+			seg->yi = (&map[i][j])->y;
+			seg->yf = (&map[i + 1][j])->y;
+		}
+		draw(seg, win);
 	}
-	map[i] = NULL;
-	return (map);
-}
-
-
-t_point	**get_map(char *file)
-{
-	int		fd;
-	int		size[3];
-	char	*str;
-	t_line	*lines;
-
-	fd = open(file, O_RDONLY);
-	(fd < 0) && error_case();
-	str = get_next_line(fd);
-	(!str || !*str) && error_case();
-	size[1] = 0;
-	size[2] = 0;
-	lines = NULL;
-	while (str)
-	{
-		my_push_back(&lines, ft_split(str, ' ', size));
-		if (!size[1])
-			size[1] = size[0];
-		(size[1] != size[0]) && error_case();
-		free(str);
-		str = get_next_line(fd);
-		size[2]++;
-	}
-	return(list_to_array(lines, size + 1));
 }
 
 int	main(int ac, char **av)
 {
-	t_point **map;
-	int i = 0,j = 0;
-	int fd = open(av[1], O_RDONLY);
+	t_point		**map;
+    t_window	*window;
+	
 	if (ac != 2)
 		error_case();
-	map = get_map(av[1]);
-	while (map[i])
-	{
-		j = 0;
-		while (j < 11)
-		{
-			printf("%d  ", (&map[i][j]) -> z);
-			j++;
-		}
-		i++;
-		printf("\n");
-	}
-	
+    window = (t_window *) malloc(sizeof(t_window));
+	map = get_map(av[1], window -> map_size);
+	window -> mlx = mlx_init();
+    window -> win = mlx_new_window(window -> mlx, 1500, 1000, "fdf");
+	window -> color = get_color();
+	window -> t_x = 0;
+	window -> t_y = 0;
+	draw_map(map, window);
+	mlx_loop(window -> mlx);
 }
