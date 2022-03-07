@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   libft.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: irhesri <irhesri@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 09:41:45 by irhesri           #+#    #+#             */
-/*   Updated: 2022/02/15 13:53:30 by irhesri          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "fdf.h"
 
 size_t	ft_strlen(const char *str)
@@ -43,7 +31,19 @@ void	ft_putstr_fd(char *s, int fd)
 		}
 	}
 }
-/*
+
+int	is_color(char *str)
+{
+	if (*str++ != '0' || *str++ != 'x' || ft_strlen(str) > 6)
+		return (0);
+	while (*str)
+	{
+		if (!((47 < *str && *str < 58) || (64 < *str && *str < 71) || (96 < *str && *str < 103)))
+			return (0);
+		str++;
+	}
+	return (1);
+}
 int	my_atoi(char *str)
 {
 	unsigned long long	n;
@@ -66,4 +66,4 @@ int	my_atoi(char *str)
 		|| (n > 2147483648 && symbole == -1))
 		error_case();
 	return (symbole * n);
-}*/
+}

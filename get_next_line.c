@@ -59,10 +59,12 @@ char	*read_next_line(char *str, int fd)
 	int		size;
 
 	size = 0;
-	s = NULL;
-	s = ft_endlsplit(s, str, &size);
+	s = ft_endlsplit(NULL, str, &size);
 	if (s[size - 1] == '\n')
+	{
+		s[size - 1] = '\0';
 		return (s);
+	}
 	len = 1;
 	while (len > 0)
 	{
@@ -72,7 +74,10 @@ char	*read_next_line(char *str, int fd)
 			str[len] = '\0';
 			s = ft_endlsplit(s, str, &size);
 			if (s[size - 1] == '\n')
+			{
+				s[size - 1] = '\0';
 				return (s);
+			}
 		}
 	}
 	return (s);
