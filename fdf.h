@@ -22,7 +22,7 @@ typedef struct s_segment
 	int		xf;
 	int		yf;
 	short	b;
-	char	*color;
+	int		color;
 } t_segment ;
 
 typedef struct s_point
@@ -30,7 +30,7 @@ typedef struct s_point
 	int		x;
 	int		y;
 	int		z;
-	char	*color;
+	int		color;
 } t_point ;
 
 typedef struct s_window
@@ -38,7 +38,7 @@ typedef struct s_window
 	void	*mlx;
 	void	*win;
 	void	*image;
-	char	*color;
+	int		color;
 	// y - x
 	int		map_size[2];
 	int		min[2];
