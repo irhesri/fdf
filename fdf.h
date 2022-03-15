@@ -33,32 +33,41 @@ typedef struct s_point
 	int		color;
 } t_point ;
 
+typedef struct s_image
+{
+	void	*img;
+	char	*address;
+	int		bits;
+	int		size;
+	int		endian;
+} t_image ;
+
 typedef struct s_window
 {
 	void	*mlx;
 	void	*win;
-	void	*image;
+	t_point	**map;
+	t_image	*image;
+	t_line	*lines;
 	int		color;
 	// y - x
+	float	z;
+	int		trans[2];
+	double	teta;
+	float	zoom;
 	int		map_size[2];
 	int		min[2];
 	int		max[2];
 } t_window ;
 
-void	ft_putstr_fd(char *s, int fd);
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
 char	**ft_split(char const *s, char c, int *len);
 int		error_case(short n);
-void    my_push_back(t_line **list, char **data);
-
-
+void	draw_map(t_point **map, t_window *win);
+void	list_to_array(t_line *line, int *size, t_window *win, t_point **map);
 
 int		my_atoi(char *str, t_point *point);
-
-
-void	draw(t_segment *seg, t_window *win);
-// void	mlx_pixel_put(void *mlx_ptr, void *win_ptr, int x, int y, int color);;
 /************************NEW*******************************/
 t_point	**get_map(char *file, int *size, t_window *win);
 char	*get_color(void);

@@ -60,25 +60,22 @@ char	*read_next_line(char *str, int fd)
 
 	size = 0;
 	s = ft_endlsplit(NULL, str, &size);
-	if (s[size - 1] == '\n')
+	if (s[size - 1] == '\n' && size != 1)
 	{
 		s[size - 1] = '\0';
 		return (s);
 	}
-	len = 1;
+	len = read(fd, str, 100);
 	while (len > 0)
 	{
-		len = read(fd, str, 100);
-		if (len > 0)
+		str[len] = '\0';
+		s = ft_endlsplit(s, str, &size);
+		if (s[size - 1] == '\n' && size != 1)
 		{
-			str[len] = '\0';
-			s = ft_endlsplit(s, str, &size);
-			if (s[size - 1] == '\n')
-			{
-				s[size - 1] = '\0';
-				return (s);
-			}
+			s[size - 1] = '\0';
+			return (s);
 		}
+		len = read(fd, str, 100);
 	}
 	return (s);
 }
@@ -96,6 +93,8 @@ char	*get_next_line(int fd)
 		str[0] = '\0';
 	}
 	s = read_next_line(str, fd);
+	// if (*s == '\n')
+	// 	error_case(4);
 	if (*s == '\0')
 	{
 		free (str);
