@@ -28,7 +28,7 @@ void	min_max(t_window *win, int n, short k, short b)
 		win->max[k] = n;
 }
 
-void	list_to_array(t_line *line, int *size, t_window *win, t_point **map)
+static void	list_to_array(t_line *line, int *size, t_window *win, t_point **map)
 {
 	static int	width;
 	int	i;
@@ -39,21 +39,18 @@ void	list_to_array(t_line *line, int *size, t_window *win, t_point **map)
 		i = 1000 / win->map_size[1];
 		j = 500 / win->map_size[0];
 		width = i * (i <= j) + j * (i > j);
-		width = width * (width <= 20) + 20 * (width > 20);
+		width = width * (width < 20) + 20 * (width >= 20);
 	}
-
 	i = -1;
 	while (line)
 	{
-		map[++i] = (t_point *) malloc(sizeof(t_point) * size[1]);
+		map[++i] = (t_point *) malloc(sizeof(t_point) * (win->map_size[1]));
 		j = -1;
 		while (++j < win->map_size[1])
 		{
-			(&map[i][j])->x = (j - i) * cos(win->teta) * width * win->zoom;
-			(&map[i][j])->z = my_atoi(line->points[j], &map[i][j]) * win->z * win->zoom;
-			(&map[i][j])->y = (j + i) * sin(win->teta) * width * win->zoom;
-			(&map[i][j])->y -= (&map[i][j])->z;
-
+			(&map[i][j])->x = (j - i) * width;
+			(&map[i][j])->z = my_atoi(line->points[j], &map[i][j]) * (width / 2 + 1);
+			(&map[i][j])->y = (j + i) * width - (&map[i][j])->z;
 			min_max(win, (&map[i][j])->y, 0, (i == 0 && j == 0));
 			min_max(win, (&map[i][j])->x, 1, (i == 0 && j == 0));
 		}
@@ -95,22 +92,15 @@ t_point	**get_map(char *file, int *size, t_window *win)
 	while (str)
 	{
 		my_push_back(&lines, ft_split(str, ' ', &len));
-		if (!size[0]++)
-			size[1] = len;
-		(size[1] != len || !*str) && error_case(4);
+		if (!win->map_size[0]++)
+			win->map_size[1] = len;
+		(win->map_size[1] != len || !*str) && error_case(4);
 		free(str);
 		str = get_next_line(fd);
 	}
-	// map = (t_point **) malloc(sizeof(t_point *) * (size[0] + 1));
-	// (!map) && error_case(0);
-	// int i = 0;
-	// while (i < win->map_size[0])
-	// {
-	// 	map[i++] = malloc(4);
-	// }
-	
-	// list_to_array(lines, size, win, map);
-	win->lines = lines;
-	// free_function(lines);
+	map = (t_point **) malloc(sizeof(t_point *) * (win->map_size[0] + 1));
+	(!map) && error_case(0);
+	list_to_array(lines, size, win, map);
+	free_function(lines);
 	return (map);
 }

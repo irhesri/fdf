@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-static void	draw_segment_up(t_segment *seg, t_image *img, int dx, int dy) // dx >= dy xf > xi
+static void	draw_segment_up(t_segment *seg, t_image *img, int dx, int dy)
 {
 	int		delta;
 	int		color;
@@ -20,12 +20,12 @@ static void	draw_segment_up(t_segment *seg, t_image *img, int dx, int dy) // dx 
 			!seg->b && seg->yi++;
 			seg->b && seg->xi++;
 		}
-		!seg->b && seg->xi++; //    (dx < dy) == seg->b
+		!seg->b && seg->xi++;
 		seg->b && seg->yi++;
 	}
 }
 
-static void	draw_segment_down(t_segment *seg, t_image *img, int dx, int dy) // xf < xi
+static void	draw_segment_down(t_segment *seg, t_image *img, int dx, int dy)
 {
 	int		delta;
 	int		color;
@@ -62,17 +62,13 @@ static void	seg_init(t_segment *seg, t_window *win, t_point *p0, t_point *p1)
 		p0 = p1;
 		p1 = p;
 	}
-	seg->xi = (p0->x + abs(win->min[1]) + win->trans[1]);
-	seg->yi = ((p0->y + abs(win->min[0]) + win->trans[0]));
-	seg->xf = (p1->x + abs(win->min[1]) + win->trans[1]);
-	seg->yf = (p1->y + abs(win->min[0]) + win->trans[0]);
-	
-	
+	seg->xi = p0->x + abs(win->min[1]) + 10;
+	seg->yi = p0->y + abs(win->min[0]) + 10;
+	seg->xf = p1->x + abs(win->min[1]) + 10;
+	seg->yf = p1->y + abs(win->min[0]) + 10;
 	dx = abs(seg->xf - seg->xi);
 	dy = abs(seg->yf - seg->yi);
 	seg->b = (dx < dy);
-
-	printf("(%d , %d)  -> (%d , %d)\n", seg->xi, seg->yi, seg->xf, seg->yf);
 	if ((seg->xf >= seg->xi) && (dx >= dy))
 		draw_segment_up(seg, win->image, dx, dy);
 	else if (seg->xf >= seg->xi)

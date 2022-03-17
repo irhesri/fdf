@@ -93,8 +93,8 @@ char	*get_next_line(int fd)
 		str[0] = '\0';
 	}
 	s = read_next_line(str, fd);
-	// if (*s == '\n')
-	// 	error_case(4);
+	if (*s == '\n')
+		error_case(4);
 	if (*s == '\0')
 	{
 		free (str);

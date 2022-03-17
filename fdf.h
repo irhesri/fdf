@@ -46,15 +46,9 @@ typedef struct s_window
 {
 	void	*mlx;
 	void	*win;
-	t_point	**map;
 	t_image	*image;
-	t_line	*lines;
 	int		color;
 	// y - x
-	float	z;
-	int		trans[2];
-	double	teta;
-	float	zoom;
 	int		map_size[2];
 	int		min[2];
 	int		max[2];
@@ -65,7 +59,7 @@ size_t	ft_strlen(const char *str);
 char	**ft_split(char const *s, char c, int *len);
 int		error_case(short n);
 void	draw_map(t_point **map, t_window *win);
-void	list_to_array(t_line *line, int *size, t_window *win, t_point **map);
+
 
 int		my_atoi(char *str, t_point *point);
 /************************NEW*******************************/
