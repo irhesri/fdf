@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialise.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: irhesri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/17 21:13:59 by irhesri           #+#    #+#             */
+/*   Updated: 2022/03/17 21:14:01 by irhesri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static void	my_push_back(t_line **list, char **data)
@@ -20,7 +32,7 @@ static void	my_push_back(t_line **list, char **data)
 	lst->next = new;
 }
 
-void	min_max(t_window *win, int n, short k, short b)
+static void	min_max(t_window *win, int n, short k, short b)
 {
 	if (b || win->min[k] > n)
 		win->min[k] = n;
@@ -28,52 +40,47 @@ void	min_max(t_window *win, int n, short k, short b)
 		win->max[k] = n;
 }
 
-static void	list_to_array(t_line *line, int *size, t_window *win, t_point **map)
+static int	get_width(t_window *win, int *width)
 {
-	static int	width;
 	int	i;
 	int	j;
 
-	if (!width)
-	{
-		i = 1000 / win->map_size[1];
-		j = 500 / win->map_size[0];
-		width = i * (i <= j) + j * (i > j);
-		width = width * (width < 20) + 20 * (width >= 20);
-	}
-	i = -1;
+	i = 1000 / win->map_size[1];
+	j = 500 / win->map_size[0];
+	(*width) = i * (i <= j) + j * (i > j);
+	(*width) = (*width) * ((*width) <= 20) + 20 * ((*width) > 20);
+	if (!(*width))
+		(*width) = 1;
+	return (1);
+}
+
+void	list_to_array(t_line *line, t_window *win, t_point **map, short b)
+{
+	static int	width;
+	int			i;
+	int			j;
+
+	(!width) && get_width(win, &width);
+	i = 0;
 	while (line)
 	{
-		map[++i] = (t_point *) malloc(sizeof(t_point) * (win->map_size[1]));
+		if (b)
+			map[i] = malloc(sizeof(t_point) * (win->map_size[1] + 1));
+		(!map) && error_case(0);
 		j = -1;
 		while (++j < win->map_size[1])
 		{
 			(&map[i][j])->x = (j - i) * width;
-			(&map[i][j])->z = my_atoi(line->points[j], &map[i][j]) * (width / 2 + 1);
-			(&map[i][j])->y = (j + i) * width - (&map[i][j])->z;
+			(&map[i][j])->z = my_atoi(line->points[j], &map[i][j]) * 3;
+			(&map[i][j])->y = (j + i) * width / 2;
+			(&map[i][j])->y -= (&map[i][j])->z;
 			min_max(win, (&map[i][j])->y, 0, (i == 0 && j == 0));
 			min_max(win, (&map[i][j])->x, 1, (i == 0 && j == 0));
 		}
 		line = line->next;
+		i++;
 	}
-	map[++i] = NULL;
-}
-
-static void	free_function(t_line *lines)
-{
-	t_line	*l;
-	int		i;
-
-	while (lines)
-	{
-		l = lines->next;
-		i = 0;
-		while (lines->points[i])
-			free(lines->points[i++]);
-		free(lines->points);
-		free(lines);
-		lines = l;
-	}
+	map[i] = NULL;
 }
 
 t_point	**get_map(char *file, int *size, t_window *win)
@@ -92,15 +99,15 @@ t_point	**get_map(char *file, int *size, t_window *win)
 	while (str)
 	{
 		my_push_back(&lines, ft_split(str, ' ', &len));
-		if (!win->map_size[0]++)
-			win->map_size[1] = len;
-		(win->map_size[1] != len || !*str) && error_case(4);
+		if (!size[0]++)
+			size[1] = len;
+		(size[1] != len || !*str) && error_case(4);
 		free(str);
 		str = get_next_line(fd);
 	}
 	map = (t_point **) malloc(sizeof(t_point *) * (win->map_size[0] + 1));
 	(!map) && error_case(0);
-	list_to_array(lines, size, win, map);
-	free_function(lines);
+	list_to_array(lines, win, map, 1);
+	win->lines = lines;
 	return (map);
 }

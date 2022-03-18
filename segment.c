@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   segment.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: irhesri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/17 21:14:27 by irhesri           #+#    #+#             */
+/*   Updated: 2022/03/17 21:14:30 by irhesri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static void	draw_segment_up(t_segment *seg, t_image *img, int dx, int dy)
@@ -10,7 +22,7 @@ static void	draw_segment_up(t_segment *seg, t_image *img, int dx, int dy)
 	delta = 2 * dy - dx;
 	while ((!seg->b && seg->xi <= seg->xf) || (seg->b && seg->yi <= seg->yf))
 	{
-		dst = img->address + (seg->yi * img->size + seg->xi * img->bits / 8);
+		dst = img->address + (seg->yi * img->size + seg->xi * img->bit / 8);
 		*(unsigned int *) dst = color;
 		if (delta < 0)
 			delta += 2 * dy;
@@ -35,7 +47,7 @@ static void	draw_segment_down(t_segment *seg, t_image *img, int dx, int dy)
 	delta = 2 * dy - dx;
 	while ((!seg->b && seg->xi >= seg->xf) || (seg->b && seg->yi <= seg->yf))
 	{
-		dst = img->address + (seg->yi * img->size + seg->xi * img->bits / 8);
+		dst = img->address + (seg->yi * img->size + seg->xi * img->bit / 8);
 		*(unsigned int *) dst = color;
 		if (delta < 0)
 			delta += 2 * dy;
@@ -62,10 +74,10 @@ static void	seg_init(t_segment *seg, t_window *win, t_point *p0, t_point *p1)
 		p0 = p1;
 		p1 = p;
 	}
-	seg->xi = p0->x + abs(win->min[1]) + 10;
-	seg->yi = p0->y + abs(win->min[0]) + 10;
-	seg->xf = p1->x + abs(win->min[1]) + 10;
-	seg->yf = p1->y + abs(win->min[0]) + 10;
+	seg->xi = p0->x + abs((win->min[1]) * (win->min[1] < 0)) + 10;
+	seg->yi = p0->y + abs((win->min[0]) * (win->min[0] < 0)) + 10;
+	seg->xf = p1->x + abs((win->min[1]) * (win->min[1] < 0)) + 10;
+	seg->yf = p1->y + abs((win->min[0]) * (win->min[0] < 0)) + 10;
 	dx = abs(seg->xf - seg->xi);
 	dy = abs(seg->yf - seg->yi);
 	seg->b = (dx < dy);

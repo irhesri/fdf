@@ -33,13 +33,11 @@ static	int	ft_strcopy(char *s1, char *s2, char c)
 
 static char	*ft_endlsplit(char *s1, char *s2, int *size)
 {
-	int		size1;
 	int		i;
 	char	*str;
 
-	size1 = (*size) + 101;
 	i = 0;
-	str = (char *) malloc(sizeof(char) * size1);
+	str = (char *) malloc(sizeof(char) * (*size) + 101);
 	if (!str)
 		return (NULL);
 	if (s1 && *s1)
@@ -60,17 +58,14 @@ char	*read_next_line(char *str, int fd)
 
 	size = 0;
 	s = ft_endlsplit(NULL, str, &size);
-	if (s[size - 1] == '\n' && size != 1)
-	{
-		s[size - 1] = '\0';
+	if (size > 0 && s[size - 1] == '\n')
 		return (s);
-	}
 	len = read(fd, str, 100);
 	while (len > 0)
 	{
 		str[len] = '\0';
 		s = ft_endlsplit(s, str, &size);
-		if (s[size - 1] == '\n' && size != 1)
+		if (size > 0 && s[size - 1] == '\n')
 		{
 			s[size - 1] = '\0';
 			return (s);
@@ -82,7 +77,7 @@ char	*read_next_line(char *str, int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	*str = NULL;
+	static char	*str;
 	char		*s;
 
 	if (!str)

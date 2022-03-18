@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   functions.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: irhesri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/17 21:14:51 by irhesri           #+#    #+#             */
+/*   Updated: 2022/03/17 21:14:53 by irhesri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 size_t	ft_strlen(const char *str)
@@ -10,7 +22,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-static void	ft_putstr_fd(char *s, int fd)
+void	ft_putstr_fd(char *s, int fd)
 {
 	if (s)
 	{
@@ -33,7 +45,7 @@ int	error_case(short n)
 	else if (n == 3)
 		ft_putstr_fd("EMPTY FILE", 2);
 	else if (n == 4)
-		ft_putstr_fd("Found wrong line length. Exiting.", 2);
+		ft_putstr_fd("Found wrong line height. Exiting.", 2);
 	else if (n == 5)
 		ft_putstr_fd("WRONG ARGUMENTS", 2);
 	else if (n == 6)
@@ -76,8 +88,6 @@ int	my_atoi(char *str, t_point *point)
 
 	n = 0;
 	symbole = 1;
-	// if (!str)
-	// 	error_case();
 	if (*str == '-')
 		symbole = -1;
 	if ((*str == '+' || *str == '-') && *(str + 1))
@@ -87,7 +97,7 @@ int	my_atoi(char *str, t_point *point)
 		n = n * 10 + *str - 48;
 		str++;
 	}
-	if (!*str)
+	if (!*str || *str == '\n')
 		point->color = -1;
 	else if (*str == ',')
 		point->color = color_to_int(++str);
