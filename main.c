@@ -25,29 +25,37 @@ int	get_window_size(t_window *win, int *width, int *length)
 	return (0);
 }
 
-int	my_close(t_window *win)
+static int	my_close(t_window *win)
 {
 	mlx_destroy_window(win->mlx, win->win);
 	exit(0);
 	return (1);
 }
 
-int	key_hook(int keycode, t_window *win)
+static int	key_hook(int keycode, t_window *win)
 {
 	(keycode == 53) && my_close(win);
 	return (1);
 }
 
+static int	wrong_args(char *str, int ac)
+{
+	int			size;
+
+	size = ft_strlen(str) - 4;
+	if (ac != 2 || str[size++] != '.' || str[size++] != 'f'
+		|| str[size++] != 'd' || str[size] != 'f')
+		return (1);
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	t_window	*window;
-	int			size;
 	int			width;
 	int			length;
 
-	size = ft_strlen(av[1]) - 4;
-	if (ac != 2 || av[1][size++] != '.' || av[1][size++] != 'f'
-		|| av[1][size++] != 'd' || av[1][size] != 'f')
+	if (wrong_args(av[1], ac))
 		error_case(5);
 	window = (t_window *) malloc(sizeof(t_window));
 	window->image = NULL;
