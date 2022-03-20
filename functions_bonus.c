@@ -50,6 +50,8 @@ int	error_case(short n)
 		ft_putstr_fd("FOUND WRONG LINE LENGTH. EXITING.", 2);
 	else if (n == 5)
 		ft_putstr_fd("WRONG ARGUMENTS", 2);
+	else if (n == 6)
+		ft_putstr_fd("MLX_ERROR", 2);
 	ft_putstr_fd("\n", 2);
 	exit (0);
 	return (0);

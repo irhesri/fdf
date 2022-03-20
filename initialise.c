@@ -91,7 +91,7 @@ t_point	**get_map(char *file, int *size, t_window *win)
 	t_point	**map;
 
 	fd = open(file, O_RDONLY);
-	(fd < 0) && error_case(1);
+	(fd < 0) && error_case(2);
 	str = get_next_line(fd);
 	(!str || !*str) && error_case(3);
 	lines = NULL;

@@ -76,7 +76,9 @@ int	main(int ac, char **av)
 	window->color = 0xFFFFFF;
 	window->map = get_map(av[1], window->map_size, window);
 	window->mlx = mlx_init();
-	window->win = mlx_new_window(window->mlx, 2500, 1500, "fdf");
+	(!window->mlx) && error_case(6);
+	window->win = mlx_new_window(window->mlx, 2500, 1350, "fdf");
+	(!window->win) && error_case(6);
 	get_window_size(window);
 	mlx_hook(window->win, 2, 1L << 0, key_hook, window);
 	mlx_hook(window->win, 17, 0, my_close, window);

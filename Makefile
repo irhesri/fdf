@@ -1,7 +1,7 @@
 NAME = fdf
 NAME_B = fdf_bonus
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 LFLAGS = -Imlx -lmlx -framework OpenGl -framework Appkit
 MANDATORY = main.c initialise.c get_next_line.c ft_split.c functions.c segment.c
 BONUS = main_bonus.c initialise_bonus.c get_next_line_bonus.c ft_split_bonus.c functions_bonus.c segment_bonus.c

@@ -55,7 +55,9 @@ int	main(int ac, char **av)
 	window->map = get_map(av[1], window->map_size, window);
 	get_window_size(window, &width, &length);
 	window->mlx = mlx_init();
+	(!window->mlx) && error_case(6);
 	window->win = mlx_new_window(window->mlx, width, length, "fdf");
+	(!window->win) && error_case(6);
 	new_image(window, width, length);
 	mlx_hook(window->win, 2, 1L << 0, key_hook, window);
 	mlx_hook(window->win, 17, 0, my_close, window);
