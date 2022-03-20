@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "fdf_bonus.h"
 
 static void	draw_segment_up(t_segment *seg, t_image *img, int dx, int dy)
 {
@@ -105,9 +105,9 @@ static void	draw_map(t_point **map, t_window *win)
 		j = -1;
 		while (++j < win->map_size[1] - 1)
 		{
-			seg->color = (&map[i][j])->color;
-			if (seg->color == -1)
-				seg->color = 0xffffff;
+			seg->color = win->color;
+			if ((&map[i][j])->color != -1)
+				seg->color = (&map[i][j])->color;
 			seg_init(seg, win, &map[i][j], &map[i][j + 1]);
 			if (map[i + 1])
 				seg_init(seg, win, &map[i][j], &map[i + 1][j]);
@@ -125,17 +125,18 @@ void	new_image(t_window *win, int width, int length)
 	char		*a;
 
 	img = (t_image *) malloc(sizeof(t_image));
-	img->img = mlx_new_image(win->mlx, width - 10, length - 10);
+	img->img = mlx_new_image(win->mlx, width, length);
 	a = mlx_get_data_addr(img->img, &(img->bit), &(img->size), &(img->endian));
 	img->address = a;
 	t = win->image;
 	win->image = img;
 	draw_map(win->map, win);
+	mlx_clear_window(win->mlx, win->win);
+	mlx_put_image_to_window (win->mlx, win->win, img->img,
+		win->trans[1], win->trans[0]);
 	if (t)
 	{
 		mlx_destroy_image(win->mlx, t->img);
 		free (t);
 	}
-	mlx_clear_window(win->mlx, win->win);
-	mlx_put_image_to_window (win->mlx, win->win, img->img, 10, 10);
 }

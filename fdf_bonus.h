@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#ifndef FDF_BONUS_H
+# define FDF_BONUS_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -60,9 +60,15 @@ typedef struct s_window
 	t_image	*image;
 	void	*mlx;
 	void	*win;
+	int		color;
 	int		map_size[2];
 	int		n[2];
 	int		x[2];
+	int		trans[2];
+	float	z;
+	float	zoom;
+	double	teta;
+	short	p;
 }t_window;
 
 char	*get_next_line(int fd);

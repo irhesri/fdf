@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "fdf_bonus.h"
 
 static void	my_push_back(t_line **list, char **data)
 {
@@ -53,31 +53,31 @@ static int	get_width(t_window *win, int *width)
 	return (1);
 }
 
-void	list_to_array(t_line *line, t_window *win, t_point **map, short b)
+void	list_to_array(t_line *line, t_window *w, t_point **map, short b)
 {
-	static int	width;
+	static int	len;
 	int			i;
 	int			j;
 
-	(!width) && get_width(win, &width);
-	i = 0;
-	while (line)
+	(!len) && get_width(w, &len);
+	i = -1;
+	while (++i < w->map_size[0])
 	{
 		if (b)
-			map[i] = malloc(sizeof(t_point) * (win->map_size[1] + 1));
-		(!map) && error_case(0);
+			map[i] = malloc(sizeof(t_point) * (w->map_size[1] + 1));
+		(!map[i]) && error_case(0);
 		j = -1;
-		while (++j < win->map_size[1])
+		while (++j < w->map_size[1])
 		{
-			(&map[i][j])->x = (j - i) * width;
-			(&map[i][j])->z = my_atoi(line->points[j], &map[i][j]) * 1.75;
-			(&map[i][j])->y = (j + i) * width / 2;
-			(&map[i][j])->y -= (&map[i][j])->z;
-			min_max(win, (&map[i][j])->y, 0, (i == 0 && j == 0));
-			min_max(win, (&map[i][j])->x, 1, (i == 0 && j == 0));
+			(&map[i][j])->z = my_atoi(line->points[j], &map[i][j]) * w->zoom;
+			(&map[i][j])->x = ((j - i) * cos(w->teta) * !w->p + j * w->p)
+				* len * w->zoom;
+			(&map[i][j])->y = ((j + i) * sin(w->teta) * !w->p + i * w->p)
+				* len * w->zoom - (&map[i][j])->z * w->z * !w->p;
+			min_max(w, (&map[i][j])->y, 0, (i == 0 && j == 0));
+			min_max(w, (&map[i][j])->x, 1, (i == 0 && j == 0));
 		}
 		line = line->next;
-		i++;
 	}
 	map[i] = NULL;
 }
@@ -100,7 +100,7 @@ t_point	**get_map(char *file, int *size, t_window *win)
 		my_push_back(&lines, ft_split(str, ' ', &len));
 		if (!size[0]++)
 			size[1] = len;
-		(size[1] != len) && error_case(4);
+		(size[1] != len || !*str) && error_case(4);
 		free(str);
 		str = get_next_line(fd);
 	}
