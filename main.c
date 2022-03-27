@@ -43,7 +43,7 @@ static int	wrong_args(char *str, int ac)
 	int			size;
 
 	size = ft_strlen(str) - 4;
-	if (ac != 2 || str[size++] != '.' || str[size++] != 'f'
+	if (ac != 2 || size < 0 || str[size++] != '.' || str[size++] != 'f'
 		|| str[size++] != 'd' || str[size] != 'f')
 		return (1);
 	return (0);
@@ -58,6 +58,7 @@ int	main(int ac, char **av)
 	if (wrong_args(av[1], ac))
 		error_case(5);
 	window = (t_window *) malloc(sizeof(t_window));
+	!(window) && error_case(0);
 	window->image = NULL;
 	window->map_size[0] = 0;
 	window->map = get_map(av[1], window->map_size, window);

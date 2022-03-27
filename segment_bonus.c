@@ -125,7 +125,9 @@ void	new_image(t_window *win, int width, int length)
 	char		*a;
 
 	img = (t_image *) malloc(sizeof(t_image));
+	!(img) && error_case(0);
 	img->img = mlx_new_image(win->mlx, width, length);
+	!(img->img) && error_case(6);
 	a = mlx_get_data_addr(img->img, &(img->bit), &(img->size), &(img->endian));
 	img->address = a;
 	t = win->image;

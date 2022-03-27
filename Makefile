@@ -9,10 +9,10 @@ BONUS = main_bonus.c initialise_bonus.c get_next_line_bonus.c ft_split_bonus.c f
 all: $(NAME)
 
 $(NAME): $(MANDATORY:.c=.o) 
-	gcc $(CFLAGS) $(LFLAGS) $(MANDATORY:.c=.o) -o $@ -lm
+	gcc $(CFLAGS) $(LFLAGS) $(MANDATORY) -o $@ -lm
 
 $(NAME_B): $(BONUS:.c=.o)
-	gcc $(CFLAGS) $(LFLAGS) $(BONUS:.c=.o) -o $@ -lm
+	gcc $(CFLAGS) $(LFLAGS) $(BONUS) -o $@ -lm
 
 bonus:$(NAME_B)
 

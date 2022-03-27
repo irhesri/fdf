@@ -18,6 +18,7 @@ static void	my_push_back(t_line **list, char **data)
 	t_line	*new;
 
 	new = malloc (sizeof (t_line));
+	!(new) && error_case(0);
 	new->points = data;
 	new->next = NULL;
 	if (!*list)
