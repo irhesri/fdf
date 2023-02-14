@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irhesri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: imane <imane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 21:14:41 by irhesri           #+#    #+#             */
-/*   Updated: 2022/03/17 21:14:44 by irhesri          ###   ########.fr       */
+/*   Updated: 2023/02/13 23:44:51 by imane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,34 +29,21 @@ static int	my_close(t_window *win)
 {
 	mlx_destroy_window(win->mlx, win->win);
 	exit(0);
-	return (1);
 }
 
 static int	key_hook(int keycode, t_window *win)
 {
-	(keycode == 53) && my_close(win);
+	(keycode == ESC) && my_close(win);
 	return (1);
-}
-
-static int	wrong_args(char *str, int ac)
-{
-	int			size;
-
-	size = ft_strlen(str) - 4;
-	if (ac != 2 || size < 0 || str[size++] != '.' || str[size++] != 'f'
-		|| str[size++] != 'd' || str[size] != 'f')
-		return (1);
-	return (0);
 }
 
 int	main(int ac, char **av)
 {
-	t_window	*window;
 	int			width;
 	int			length;
+	t_window	*window;
 
-	if (wrong_args(av[1], ac))
-		error_case(5);
+	check_args(av[1], ac);
 	window = (t_window *) malloc(sizeof(t_window));
 	!(window) && error_case(0);
 	window->image = NULL;

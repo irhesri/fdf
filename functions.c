@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irhesri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: imane <imane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 21:14:51 by irhesri           #+#    #+#             */
-/*   Updated: 2022/03/17 21:14:53 by irhesri          ###   ########.fr       */
+/*   Updated: 2023/02/13 23:34:07 by imane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,37 +24,27 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-static void	ft_putstr_fd(char *s, int fd)
-{
-	if (s)
-	{
-		while (*s)
-		{
-			write(fd, s, 1);
-			s++;
-		}
-	}
-}
-
 int	error_case(short n)
 {
-	if (n == 0)
-		ft_putstr_fd("ALLOCATION ERROR", 2);
-	else if (n == 1)
-		ft_putstr_fd("WRONG MAP", 2);
-	else if (n == 2)
-		ft_putstr_fd("CAN'T OPEN THE FILE", 2);
-	else if (n == 3)
-		ft_putstr_fd("EMPTY FILE", 2);
-	else if (n == 4)
-		ft_putstr_fd("FOUND WRONG LINE LENGTH. EXITING.", 2);
-	else if (n == 5)
-		ft_putstr_fd("WRONG ARGUMENTS", 2);
-	else if (n == 6)
-		ft_putstr_fd("MLX_ERROR", 2);
-	ft_putstr_fd("\n", 2);
-	exit (0);
-	return (0);
+	static const char	error[8][40] = {"ALLOCATION ERROR\n", "WRONG MAP\n",
+		"CAN'T OPEN THE FILE\n", "EMPTY FILE\n",
+		"FOUND WRONG LINE LENGTH. EXITING.\n",
+		"WRONG NUMBER OF ARGUMENTS\n", "MLX_ERROR\n",
+		"WRONG EXTENSION\n"};
+
+	exit (write(2, error[n], ft_strlen(error[n])));
+}
+
+void	check_args(char *str, int ac)
+{
+	int			size;
+
+	if (ac != 2)
+		error_case(5);
+	size = ft_strlen(str) - 4;
+	if (size < 0 || str[size++] != '.' || str[size++] != 'f'
+		|| str[size++] != 'd' || str[size] != 'f')
+		error_case(7);
 }
 
 static int	color_to_int(char *str)

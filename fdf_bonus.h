@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irhesri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: imane <imane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 21:13:44 by irhesri           #+#    #+#             */
-/*   Updated: 2022/03/17 21:13:47 by irhesri          ###   ########.fr       */
+/*   Updated: 2023/02/13 23:43:10 by imane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <math.h>
-# include <mlx.h>
+
+# ifdef __linux__
+#  include "mlx_linux/mlx_linux.h"
+# else
+#  include "mlx_mac/mlx_mac.h"
+# endif
 
 typedef struct s_line
 {
@@ -70,14 +75,15 @@ typedef struct s_window
 	short	p;
 }t_window;
 
-char	*get_next_line(int fd);
-size_t	ft_strlen(const char *str);
-char	**ft_split(char const *s, char c, int *len);
 int		my_atoi(char *str, t_point *point);
+char	*get_next_line(int fd);
+char	**ft_split(char const *s, char c, int *len);
+size_t	ft_strlen(const char *str);
 /*************************************NEW*************************************/
-t_point	**get_map(char *file, int *size, t_window *win);
-void	list_to_array(t_line *line, t_window *win, t_point **map, short b);
 int		error_case(short n);
+void	check_args(char *str, int ac);
 void	new_image(t_window *window, int width, int length);
+void	list_to_array(t_line *line, t_window *win, t_point **map, short b);
+t_point	**get_map(char *file, int *size, t_window *win);
 
 #endif

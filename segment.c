@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segment.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irhesri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: imane <imane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 21:14:27 by irhesri           #+#    #+#             */
-/*   Updated: 2022/03/17 21:14:30 by irhesri          ###   ########.fr       */
+/*   Updated: 2023/02/13 23:52:11 by imane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static void	draw_segment_down(t_segment *seg, t_image *img, int dx, int dy)
 
 static void	seg_init(t_segment *seg, t_window *win, t_point *p0, t_point *p1)
 {
-	t_point	*p;
 	int		dx;
 	int		dy;
+	t_point	*p;
 
 	if (p1->y < p0->y)
 	{
@@ -120,9 +120,8 @@ static void	draw_map(t_point **map, t_window *win)
 
 void	new_image(t_window *win, int width, int length)
 {
-	t_image		*img;
-	t_image		*t;
 	char		*a;
+	t_image		*img;
 
 	img = (t_image *) malloc(sizeof(t_image));
 	!(img) && error_case(0);
@@ -130,14 +129,8 @@ void	new_image(t_window *win, int width, int length)
 	!(img->img) && error_case(0);
 	a = mlx_get_data_addr(img->img, &(img->bit), &(img->size), &(img->endian));
 	img->address = a;
-	t = win->image;
 	win->image = img;
 	draw_map(win->map, win);
-	if (t)
-	{
-		mlx_destroy_image(win->mlx, t->img);
-		free (t);
-	}
 	mlx_clear_window(win->mlx, win->win);
 	mlx_put_image_to_window (win->mlx, win->win, img->img, 10, 10);
 }
