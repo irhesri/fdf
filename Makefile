@@ -39,7 +39,7 @@ $(NAME_B): $(OBJS_BN) $(OBJS_B) check_OS
 	@$(CC) $(OBJS_BN) $(OBJS_B) $(LIBRARY) -o $@ $(CFLAGS) $(MLXFLAGS) -lm
 
 %.o: %.c
-	@$(CC) -c $< $(CFLAGS) $(MLXFLAGS)
+	@$(CC) -c $< $(CFLAGS)
 
 clean:
 	@rm -rf $(OBJS) $(OBJS_B) $(OBJS_BN)
