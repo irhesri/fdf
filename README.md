@@ -46,31 +46,15 @@ Each number represents a point in space:
  * The vertical position corresponds to its ordinate.
  * The value corresponds to its altitude, and it may contain a comma followed by the color of the line in hexa.
 
-#### Exemple :
-
-<div align="center">
-  
-  ![42.fdf](./maps/readme/42.fdf.png)
-</div>
+#### Example :
 
 ``` shell
-./fdf_bonus ./maps/42.fdf
+./fdf_bonus ./maps/julia.fdf
 ```
+
 <div align="center">
   
-![42 iso](./maps/readme/42.png)
-
-![elem-fract.fdf](./maps/readme/elem-fract.fdf.png)
-
-<sup> The map is so big so this is just a part of it </sup>
-</div>
-
-``` shell
-./fdf_bonus ./maps/elem-fract.fdf
-```
-<div align="center">
-  
-![elem iso](./maps/readme/elem-fract.png)
+  ![fdf julia](./maps/readme/fdf.gif)
 </div>
 
 ## Controls:
