@@ -6,7 +6,7 @@
 /*   By: imane <imane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 21:14:41 by irhesri           #+#    #+#             */
-/*   Updated: 2023/02/14 00:00:00 by imane            ###   ########.fr       */
+/*   Updated: 2023/05/15 15:35:38 by imane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int ac, char **av)
 	window->map = get_map(av[1], window->map_size, window);
 	window->mlx = mlx_init();
 	(!window->mlx) && error_case(6);
-	window->win = mlx_new_window(window->mlx, 2500, 1350, "fdf");
+	window->win = mlx_new_window(window->mlx, 1910, 1250, "fdf"); // you can change the size
 	(!window->win) && error_case(6);
 	get_window_size(window, -1);
 	mlx_hook(window->win, 2, 1L << 0, key_hook, window);
