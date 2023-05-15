@@ -54,10 +54,10 @@ Each number represents a point in space:
 
 <div align="center">
   
-  ![fdf julia](./maps/readme/fdf.gif)
+  ![fdf julia](./maps/readme/julia.gif)
   
    
-  <sup> in this example i tried all the keys </sup>
+  <sup> in this example i tried all the keys except of <kbd> p </kbd> </sup>
 </div>
 
 ## Controls:
